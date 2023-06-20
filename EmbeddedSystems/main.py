@@ -4,7 +4,7 @@ from actor.led import control_led
 import threading
 
 temperature_value = None
-LED_THRESHOLD = 233 # this is the value papaer is considert to burn
+LED_THRESHOLD = 229 # this is the value papaer is considert to burn
 
 def measure_temperature():
     global temperature_value
@@ -16,7 +16,7 @@ def measure_temperature():
             control_led("blink")
         else:
             control_led("off")
-        time.sleep(5)
+        time.sleep(3)
 
 
 if __name__ == "__main__":
