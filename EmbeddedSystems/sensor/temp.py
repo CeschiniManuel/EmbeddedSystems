@@ -13,8 +13,6 @@ def get_temperature():
     # Read the raw value from GPIO
     raw_value = GPIO.input(PIN_NUMBER)
 
-    print(raw_value)
-
     # Convert raw value to voltage
     voltage = raw_value * (3.3 / 1023.0)
 
