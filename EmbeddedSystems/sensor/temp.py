@@ -1,23 +1,24 @@
-import time
-import board
-import adafruit_bmp280
+import smbus2
+import bme280
 import random
 
+port = 1
+address = 0x76
+bus = smbus2.SMBus(port)
 
-# Create BMP280 sensor object
-i2c = board.I2C()  # Uses the default SDA and SCL pins
-bmp280 = adafruit_bmp280.Adafruit_BMP280_I2C(i2c)
-
+calibration_params = bme280.load_calibration_params(bus, address)
 
 def get_temperature():
-    temperature = bmp280.temperature
+    data = bme280.sample(bus, address, calibration_params)
+    temperature = data.temperature
     return temperature
-
-
-if __name__ == "__main__":
-    temperature = get_temperature()
-    print(f"Temperature: {temperature} °C")
 
 def get_temperature_simulation():
     temperature = random.uniform(225.0, 240.0)
     return temperature
+
+actual_temperature = get_temperature()
+print("Actual Temperature:", actual_temperature)
+
+simulated_temperature = get_temperature_simulation()
+print("Simulated Temperature:", simulated_temperature)

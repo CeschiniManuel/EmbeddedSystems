@@ -1,26 +1,25 @@
-from sensor.temp import get_temperature_simulation
-from sensor.sonic import measure_distance  # add this
+from sensor.temp import get_temperature
+from sensor.sonic import measure_distance
 import time
 from actor.led import control_led
 import threading
 
 temperature_value = None
-distance_value = None  # add this
+distance_value = None
 fire_alarm = False
-LED_THRESHOLD = 233 # this is the value papaer is considert to burn
+LED_THRESHOLD = 233
 
 def measure_temperature_and_distance():
     global temperature_value
     global distance_value
-    global fire_alarm  # add this
+    global fire_alarm
     while True:
-        temperature_value = get_temperature_simulation()
+        temperature_value = get_temperature()
         print(f"Temperature: {temperature_value} °C")
-        distance_value = measure_distance()  # add this
-        print(f"Distance: {distance_value} mm")  # add this
+        distance_value = measure_distance()
+        print(f"Distance: {distance_value} mm")
 
         if temperature_value >= LED_THRESHOLD:
-
             control_led("blink")
             fire_alarm = True
         else:
@@ -34,25 +33,20 @@ def measure_temperature_and_distance():
             else:
                 control_led("off")
 
-
-
-
         time.sleep(3)
 
 if __name__ == "__main__":
     try:
-        #shows programm starts
         control_led("on")
         time.sleep(3)
         control_led("off")
         time.sleep(3)
 
-        #threads:
-        measure_thread = threading.Thread(target=measure_temperature_and_distance)  # rename this thread
+        measure_thread = threading.Thread(target=measure_temperature_and_distance)
         measure_thread.start()
 
     except KeyboardInterrupt:
         pass
     finally:
         control_led("off")
-        measure_thread.join()  # rename this thread
+        measure_thread.join()
