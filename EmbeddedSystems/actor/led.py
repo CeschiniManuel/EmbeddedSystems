@@ -41,7 +41,7 @@ def control_led(state):
             blink_thread = threading.Thread(target=blink_led)
             blink_thread.start()
     else:
-        print("Invalid state. Please specify 'on', 'off', or 'blink'.")
+        print("Invalid state")
 
 
 def blink_led():
@@ -57,8 +57,7 @@ def blink_led():
 
 def led_control_thread():
     while True:
-        user_input = input(
-            "Enter 'on' to turn the LED on, 'off' to turn it off, 'blink' to make it blink, or 'quit' to exit: ")
+        user_input = input(" ")
 
         if user_input == "quit":
             control_led("off")

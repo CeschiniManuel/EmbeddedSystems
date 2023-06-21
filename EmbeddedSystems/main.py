@@ -1,5 +1,5 @@
 from sensor.temp import get_temperature
-from sensor.sonic import measure_distance
+from sensor.distance import measure_distance
 import time
 from actor.led import control_led
 import threading
@@ -7,7 +7,6 @@ import threading
 temperature_value = None
 distance_value = None
 fire_alarm = False
-LED_THRESHOLD = 233
 
 
 def measure_temperature_and_distance():
@@ -20,7 +19,7 @@ def measure_temperature_and_distance():
         distance_value = measure_distance()
         print(f"Distance: {distance_value} mm")
 
-        if temperature_value >= LED_THRESHOLD:
+        if temperature_value >= 30:
             control_led("blink")
             fire_alarm = True
         else:
@@ -34,7 +33,7 @@ def measure_temperature_and_distance():
             else:
                 control_led("off")
 
-        time.sleep(3)
+        time.sleep(1)
 
 
 if __name__ == "__main__":
@@ -42,7 +41,6 @@ if __name__ == "__main__":
         control_led("on")
         time.sleep(3)
         control_led("off")
-        time.sleep(3)
 
         measure_thread = threading.Thread(target=measure_temperature_and_distance)
         measure_thread.start()

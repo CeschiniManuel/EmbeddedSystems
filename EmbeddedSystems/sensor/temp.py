@@ -20,8 +20,3 @@ def get_temperature_simulation():
     return temperature
 
 
-actual_temperature = get_temperature()
-print("Actual Temperature:", actual_temperature)
-
-simulated_temperature = get_temperature_simulation()
-print("Simulated Temperature:", simulated_temperature)
