@@ -9,6 +9,7 @@ distance_value = None
 fire_alarm = False
 LED_THRESHOLD = 233
 
+
 def measure_temperature_and_distance():
     global temperature_value
     global distance_value
@@ -34,6 +35,7 @@ def measure_temperature_and_distance():
                 control_led("off")
 
         time.sleep(3)
+
 
 if __name__ == "__main__":
     try:

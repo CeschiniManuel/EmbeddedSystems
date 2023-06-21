@@ -19,18 +19,18 @@ def control_led(state):
     if state == "on":
         if blink_active:
             blink_active = False
-            led_state_changed = False  # Reset led_state_changed
+            led_state_changed = False
             if blink_thread is not None:
-                blink_thread.join()  # Wait for the blink_thread to finish
+                blink_thread.join()
                 blink_thread = None
         GPIO.output(LED_PIN, GPIO.HIGH)
         GPIO.output(LED_PIN2, GPIO.HIGH)
     elif state == "off":
         if blink_active:
             blink_active = False
-            led_state_changed = True  # Indicate that the LED state has changed
+            led_state_changed = True
             if blink_thread is not None:
-                blink_thread.join()  # Wait for the blink_thread to finish
+                blink_thread.join()
                 blink_thread = None
         GPIO.output(LED_PIN, GPIO.LOW)
         GPIO.output(LED_PIN2, GPIO.LOW)
