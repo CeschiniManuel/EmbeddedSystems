@@ -20,3 +20,9 @@ def get_temperature_simulation():
     return temperature
 
 
+def get_humidity():
+    data = bme280.sample(bus, address, calibration_params)
+    humidity = data.humidity
+    return humidity
+
+
