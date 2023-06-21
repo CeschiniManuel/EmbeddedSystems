@@ -11,30 +11,37 @@ GPIO.setup(LED_PIN2, GPIO.OUT)
 
 blink_active = False
 led_state_changed = False
+blink_thread = None
 
 
 def control_led(state):
-    global blink_active, led_state_changed
+    global blink_active, led_state_changed, blink_thread
     if state == "on":
         if blink_active:
             blink_active = False
             led_state_changed = False  # Reset led_state_changed
+            if blink_thread is not None:
+                blink_thread.join()  # Wait for the blink_thread to finish
+                blink_thread = None
         GPIO.output(LED_PIN, GPIO.HIGH)
         GPIO.output(LED_PIN2, GPIO.HIGH)
     elif state == "off":
         if blink_active:
             blink_active = False
             led_state_changed = True  # Indicate that the LED state has changed
+            if blink_thread is not None:
+                blink_thread.join()  # Wait for the blink_thread to finish
+                blink_thread = None
         GPIO.output(LED_PIN, GPIO.LOW)
         GPIO.output(LED_PIN2, GPIO.LOW)
     elif state == "blink":
         if not blink_active:
             blink_active = True
             led_state_changed = False  # Reset led_state_changed
-            threading.Thread(target=blink_led).start()
+            blink_thread = threading.Thread(target=blink_led)
+            blink_thread.start()
     else:
         print("Invalid state. Please specify 'on', 'off', or 'blink'.")
-
 
 
 def blink_led():
@@ -50,9 +57,11 @@ def blink_led():
 
 def led_control_thread():
     while True:
-        user_input = input("Enter 'on' to turn the LED on, 'off' to turn it off, 'blink' to make it blink, or 'quit' to exit: ")
+        user_input = input(
+            "Enter 'on' to turn the LED on, 'off' to turn it off, 'blink' to make it blink, or 'quit' to exit: ")
 
         if user_input == "quit":
             control_led("off")
             break
         control_led(user_input)
+

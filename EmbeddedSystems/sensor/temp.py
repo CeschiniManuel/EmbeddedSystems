@@ -1,32 +1,23 @@
-import RPi.GPIO as GPIO
+import time
+import board
+import adafruit_bmp280
 import random
 
-import time
 
-# GPIO pin number
-PIN_NUMBER = 23
+# Create BMP280 sensor object
+i2c = board.I2C()  # Uses the default SDA and SCL pins
+bmp280 = adafruit_bmp280.Adafruit_BMP280_I2C(i2c)
+
 
 def get_temperature():
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(PIN_NUMBER, GPIO.IN)
-
-    # Read the raw value from GPIO
-    raw_value = GPIO.input(PIN_NUMBER)
-
-    # Convert raw value to voltage
-    voltage = raw_value * (3.3 / 1023.0)
-
-    print(voltage)
-
-
-    # Convert voltage to temperature in degrees Celsius
-    temperature = (voltage - 0.5) * 100
-
+    temperature = bmp280.temperature
     return temperature
 
+
+if __name__ == "__main__":
+    temperature = get_temperature()
+    print(f"Temperature: {temperature} °C")
 
 def get_temperature_simulation():
-    temperature = random.uniform(225.0,  240.0)
+    temperature = random.uniform(225.0, 240.0)
     return temperature
-
-
